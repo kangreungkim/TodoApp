@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 
 const styles = StyleSheet.create({
     item:{
@@ -20,13 +20,26 @@ const styles = StyleSheet.create({
         fontSize:16,
         color:'#212121'
     },
+    lineThrough:{
+        color:'#9e9e9e',
+        textDecorationLine:'line-through',
+    },
+    filled:{
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'#26a69a',
+    }
 });
 
 function TodoItem({id, text, done}){
     return(
         <View style={styles.item}>
-            <View style={styles.circle} />
-            <Text style={styles.text}>{text}</Text>
+            <View style={[styles.circle, done && styles.filled]} />
+            {done && (
+                    <Image 
+                      source={require('../assets/icons/check_white/check_white.png')} />
+            )}
+            <Text style={[styles.text, done && styles.lineThrough]}>{text}</Text>
         </View>        
     );
 }
