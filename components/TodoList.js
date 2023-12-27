@@ -5,12 +5,17 @@ import TodoItem from "./TodoItem";
 styles = StyleSheet.create({
     list:{
         flex:1,
+    },
+    separator:{
+        backgroundColor:'#e0e0e0',
+        height:1,
     }
 });
 
 function TodoList({todos}){
     return(
         <FlatList 
+            ItemSeparatorComponent={()=><View style={styles.separator} />} 
             style={styles.list}
             data={todos} 
             renderItem={({item}) =>(
