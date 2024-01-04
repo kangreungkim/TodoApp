@@ -26,15 +26,40 @@ function App(): React.JSX.Element {
     {id:3, text: '투두 리스트 만들어 보기', done:false},
   ]);
 
+  const onInsert = text =>{
+    const nextId = todos.length > 0 ? Math.max(...todos.map(todo=>todo.id))+1:1;
+    const todo = {
+      id:nextId,
+      text,
+      done:false,
+    };
+    setTodos(todos.concat(todo));
+  };
+
+  const onToggle = id =>{
+    const nextTodos = todos.map(todo =>
+      todo.id === id ? {...todo, done: !todo.done} : todo,
+    );
+
+    setTodos(nextTodos);
+  };
+
+  const onRemove = id =>{
+    const nextTodos = todos.filter(todo => todo.id !== id);
+    setTodos(nextTodos);
+  };
+
   return (
     <SafeAreaView style={styles.block}>
       {/* <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.avoid}> */}
       <KeyboardAvoidingView behavior={Platform.select({ios:'padding', android: undefined})} style={styles.avoid}>
          <DateHead date={today}/>
-         {/* <Empty /> */}
-         {/* {todos.length === 0 ? <Empty /> : <TodoList todos={todos}/>} */}
-         <TodoList todos={todos}/>
-         <AddTodo />
+         {todos.length === 0 ? 
+          (<Empty />) : 
+          (<TodoList todos={todos} onToggle={onToggle} onRemove={onRemove}/>)
+         }
+         
+         <AddTodo onInsert={onInsert}/>
       </KeyboardAvoidingView>         
     </SafeAreaView>
   );

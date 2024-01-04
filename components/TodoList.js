@@ -12,7 +12,7 @@ styles = StyleSheet.create({
     }
 });
 
-function TodoList({todos}){
+function TodoList({todos, onToggle, onRemove}){
     return(
         <FlatList 
             ItemSeparatorComponent={()=><View style={styles.separator} />} 
@@ -22,7 +22,12 @@ function TodoList({todos}){
                 // <View>
                 //     <Text>{item.text}</Text>
                 // </View>
-                <TodoItem id={item.id} text={item.text} done={item.done} />
+                <TodoItem 
+                    id={item.id} 
+                    text={item.text} 
+                    done={item.done} 
+                    onToggle={onToggle}
+                    onRemove={onRemove}/>
             )}
             keyExtractor={item => item.id.toString()}
         />

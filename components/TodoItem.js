@@ -1,5 +1,7 @@
 import React from "react";
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
     item:{
@@ -28,18 +30,47 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         backgroundColor:'#26a69a',
+    },
+    removePlaceholder:{
+        width:32,
+        height:32,
     }
 });
 
-function TodoItem({id, text, done}){
+function TodoItem({id, text, done, onToggle, onRemove}){
+    const remove=()=>{
+        Alert.alert(
+            '삭제',
+            '정말로 삭제 하시겠어요?',
+            [
+                {text:'취소', onPress:()=>{}, style:'cancel'},
+                {text:'삭제', onPress:()=>{onRemove(id);}, style:'destructive'}
+            ],
+            {
+                cancelable:true,
+                onDemiss:()=>{},
+            },
+        );
+    };
+
     return(
         <View style={styles.item}>
-            <View style={[styles.circle, done && styles.filled]} />
-            {done && (
-                    <Image 
-                      source={require('../assets/icons/check_white/check_white.png')} />
+            <TouchableOpacity onPress={()=>onToggle(id)}>
+            <View style={[styles.circle, done && styles.filled]}>
+                {done && (
+                        <Image 
+                        source={require('../assets/icons/check_white/check_white.png')} />
+                )}
+            </View>
+            </TouchableOpacity>
+            <Text style={[styles.text, done && styles.lineThrough]}>{text}1</Text>
+            {done ? (
+                <TouchableOpacity onPress={remove}>
+                    <Icon name="delete" size={32} color="green" />
+                </TouchableOpacity>
+            ):(
+                <View style={styles.removePlaceholder} />
             )}
-            <Text style={[styles.text, done && styles.lineThrough]}>{text}</Text>
         </View>        
     );
 }

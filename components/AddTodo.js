@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     }
 });
 
-function AddTodo(){
+function AddTodo({onInsert}){
     const [text, setText] = useState('');
     // console.log(text);
     const button = (
@@ -42,6 +42,7 @@ function AddTodo(){
         </View>
     );
     const onPress = () =>{
+        onInsert(text);
         setText('');
         Keyboard.dismiss();
     };
