@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,6 +16,8 @@ import DateHead from './components/DateHead';
 import AddTodo from './components/AddTodo.js';
 import Empty from './components/Empty.js';
 import TodoList from './components/TodoList.js';
+// import AsyncStorage from '@react-native-community/async-storage';
+import todoStorage from './storages/todoStorages.js'
 
 function App(): React.JSX.Element {
   const today = new Date();
@@ -25,6 +27,36 @@ function App(): React.JSX.Element {
     {id:2, text: '리액트 네이티브 기초 공부', done:false},
     {id:3, text: '투두 리스트 만들어 보기', done:false},
   ]);
+
+  useEffect(()=>{
+    todoStorage
+    .get()
+    .then(setTodos)
+    .catch(console.error);
+  }, []);
+
+  useEffect(()=>{
+    todoStorage.set(todos).catch(console.error);
+  }, [todos]);
+  // useEffect(()=>{
+  //   async function load() {
+  //     try{
+  //       const rawTodos = await AsyncStorage.getItem('todos');
+  //       const savedTodos = JSON.parse(rawTodos);
+  //       setTodos(savedTodos);
+  //     }catch(e){
+  //       console.log('failed to load todos');
+  //     }
+  //   }
+  //   async function save(){
+  //     try{
+  //       await AsyncStorage.setItem('todos', JSON.stringify(todos));
+  //     } catch(e){
+  //       console.log('Failed to save todos');
+  //     }
+  //   }
+  //   save();
+  // },[todos]);
 
   const onInsert = text =>{
     const nextId = todos.length > 0 ? Math.max(...todos.map(todo=>todo.id))+1:1;
